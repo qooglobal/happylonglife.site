@@ -39,10 +39,10 @@
                             <thead>
                                 <tr>
                                     <th>Sr No</th>
-                                    <th>target_url</th>
-                                    <th>Attack </th>
-                                    <th>last Seen</th>
-                                    <th style="text-align: center;">Edit</th>
+                                    <th>Target Link</th>
+                                    <th>Attacking </th>
+                                    <th>Last Seen</th>
+                                    <th style="text-align: center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
