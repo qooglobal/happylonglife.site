@@ -17,6 +17,8 @@ class GoogleAdsController extends Controller
      */
     public function index()
     {
+        $ads = GoogleAds::get();
+        return view('ads.adsListing', ['ads' => $ads]);
     }
 
     /**
