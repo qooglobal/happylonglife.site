@@ -25,6 +25,8 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::group(['middleware' => ['NotLoggedin']], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/getUrls', [GoogleAdsController::class, 'index']);
+    Route::get('/getUrls', [GoogleAdsController::class, 'index'])->name('ads-list');
+    Route::get('ad-edit/{id}',[GoogleAdsController::class,'edit']);
+    Route::post('ad-update',[GoogleAdsController::class,'update'])->name('ad.update');
 
 });

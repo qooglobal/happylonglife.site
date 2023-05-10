@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -76,7 +76,7 @@ class GoogleAdsController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -87,7 +87,11 @@ class GoogleAdsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $adData = GoogleAds::find($id);
+        return response()->json([
+           'status' =>200,
+           'addata' =>$adData,
+       ]);
     }
 
     /**
@@ -97,9 +101,15 @@ class GoogleAdsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $GoogleAd = GoogleAds::find($request->ad_id);
+                    $GoogleAd->attack = $request->attack;
+                    $GoogleAd->last_seen_at = date("Y-m-d H:i:s");
+                    $GoogleAd->save();
+
+        return redirect()->back()->with('success',"Google Ad successfully");
+        // return back()->with(['status' => 'success', 'message' => 'Google Ad successfully.']);
     }
 
     /**

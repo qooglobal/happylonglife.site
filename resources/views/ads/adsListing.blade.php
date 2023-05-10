@@ -23,16 +23,15 @@
 
             </div>
             <h6 class="mb-0 text-uppercase">Ads Listing</h6>
+
             <hr />
             <div class="card border-top border-0 border-4 border-info">
                 <div class="card-body p-4">
-                    @if (Session::has('success'))
-                        <div id="dismiss" class="alert alert-success border-0 bg-success alert-dismissible fade show">
-                            <div class="text-white">{{ Session::get('success') }}
-                            </div>
-                            {{ Session::forget('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    @if(Session::has('success'))
+                        <div id="dismiss" class="alert alert-success alert-dismissible" style="background-color: green">
+                            <div class="text-white">{{ Session::get('success') }} </div>
                         </div>
+
                     @endif
                     <div class="table-responsive">
                         <table id="example2" class="table table-striped table-bordered">
@@ -56,8 +55,14 @@
                                         <td>{{ $ads->attack }}</td>
                                         <td>{{ $ads->last_seen_at }}</td>
                                         <td style="text-align: center;">
-                                            <a href="" class="btn btn-info btn-sm"><i
-                                                    class="fadeIn animated bx bx-edit"></i></a>
+                                            {{-- <a href="" class="btn btn-info btn-sm"><i
+                                                    class="fadeIn animated bx bx-edit"></i></a> --}}
+                                                    <button type="button" data-toggle="modal" data-target="#EditBookModalLabel"
+                                                    value="{{ $ads->id }}"
+                                                        class="btn btn-info btn-xs editbtn" style="margin-right:5px;">
+                                                        <i
+                                                    class="fadeIn animated bx bx-edit"></i>
+                                                        </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -70,23 +75,50 @@
                 </div>
             </div>
 
-            {{-- <div class="card border-top border-0 border-4 border-info">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <form method="get" action="{{ route('customersListingPdf') }}">
 
-                            <button type="submit" style="width:150px; margin:20px;" class="btn btn-xs btn-info btn-sm">Export To Pdf</button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div> --}}
 
         </div>
     </div>
     <!--end page wrapper -->
+    <!-- Edit Book Modal -->
+   <div class="modal fade" id="EditBookModalLabel" tabindex="-1" role="dialog"
+    aria-labelledby="EditBookModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <form data-parsley-validate class="form-horizontal form-label-left" action="ad-update" method="POST">
+            @csrf
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body" style="width:620px;">
+
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align">Attacking
+                    <span class="required" style="color:red">*</span>
+                    </label>
+                    <input type="hidden" name="ad_id" id="adId" value="">
+                    <div class="col-md-6 col-sm-6 ">
+                       <select class="form-control" name="attack"  id="attack" required="required">
+                          <option>Select Status</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                       </select>
+                    </div>
+                 </div>
+
+               </div>
+               <div class="modal-footer">
+                  <div class="col-md-6 col-sm-6 offset-md-5">
+                     <button class="btn btn-danger" type="reset">Reset</button>
+                     <button type="submit" class="btn btn-success">Update</button>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
 @endsection
 
 @section('script')
@@ -106,6 +138,23 @@
 
             table.buttons().container()
                 .appendTo('#example2_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $(document).on('click','.editbtn',function(){
+                var ad_id = $(this).val();
+                $.ajax({
+                type:"GET",
+                url:"/ad-edit/"+ad_id,
+                success:function(response){
+                    console.log(response);
+                    $('#adId').val(response.addata.id);
+                    $('#attack').val(response.addata.attack);
+                }
+                });
+            });
         });
     </script>
 @endsection
