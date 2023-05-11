@@ -27,11 +27,10 @@
             <hr />
             <div class="card border-top border-0 border-4 border-info">
                 <div class="card-body p-4">
-                    @if(Session::has('success'))
+                    @if (Session::has('success'))
                         <div id="dismiss" class="alert alert-success alert-dismissible" style="background-color: green">
                             <div class="text-white">{{ Session::get('success') }} </div>
                         </div>
-
                     @endif
                     <div class="table-responsive">
                         <table id="example2" class="table table-striped table-bordered">
@@ -57,12 +56,11 @@
                                         <td style="text-align: center;">
                                             {{-- <a href="" class="btn btn-info btn-sm"><i
                                                     class="fadeIn animated bx bx-edit"></i></a> --}}
-                                                    <button type="button" data-toggle="modal" data-target="#EditBookModalLabel"
-                                                    value="{{ $ads->id }}"
-                                                        class="btn btn-info btn-xs editbtn" style="margin-right:5px;">
-                                                        <i
-                                                    class="fadeIn animated bx bx-edit"></i>
-                                                        </button>
+                                            <button type="button" data-toggle="modal" data-target="#EditBookModalLabel"
+                                                value="{{ $ads->id }}" class="btn btn-info btn-xs editbtn"
+                                                style="margin-right:5px;">
+                                                <i class="fadeIn animated bx bx-edit"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -81,44 +79,51 @@
     </div>
     <!--end page wrapper -->
     <!-- Edit Book Modal -->
-   <div class="modal fade" id="EditBookModalLabel" tabindex="-1" role="dialog"
-    aria-labelledby="EditBookModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-         <form data-parsley-validate class="form-horizontal form-label-left" action="ad-update" method="POST">
-            @csrf
-            <div class="modal-content">
-               <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                  </button>
-               </div>
-               <div class="modal-body" style="width:620px;">
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align">Attacking
-                    <span class="required" style="color:red">*</span>
-                    </label>
-                    <input type="hidden" name="ad_id" id="adId" value="">
-                    <div class="col-md-6 col-sm-6 ">
-                       <select class="form-control" name="attack"  id="attack" required="required">
-                          <option>Select Status</option>
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                       </select>
+    <div class="modal fade" id="EditBookModalLabel" tabindex="-1" role="dialog" aria-labelledby="EditBookModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form data-parsley-validate class="form-horizontal form-label-left" action="ad-update" method="POST">
+                @csrf
+                <div class="modal-content">
+                    {{-- <div class="modal-header">
+                        <h4 class="modal-title"> </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> --}}
+                    <div class="modal-header" style="width:700px;">
+                        <h4 class="modal-title"> </h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                 </div>
+                    <div class="modal-body" style="width:620px;">
 
-               </div>
-               <div class="modal-footer">
-                  <div class="col-md-6 col-sm-6 offset-md-5">
-                     <button class="btn btn-danger" type="reset">Reset</button>
-                     <button type="submit" class="btn btn-success">Update</button>
-                  </div>
-               </div>
-            </div>
-         </form>
-      </div>
-   </div>
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align">Attacking
+                                <span class="required" style="color:red">*</span>
+                            </label>
+                            <input type="hidden" name="ad_id" id="adId" value="">
+                            <div class="col-md-6 col-sm-3 ">
+                                <select class="form-control" name="attack" id="attack" required="required">
+                                    <option>Select Status</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-md-12 col-sm-6 text-center">
+                            <button type="submit" class="btn btn-success">Update</button>
+                        </div>
+                        <div class="col-md-12 col-sm-6 text-center">
+                            <button class="btn btn-danger" type="reset">&nbsp;Reset&nbsp;</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -142,17 +147,17 @@
     </script>
 
     <script>
-        $(document).ready(function(){
-            $(document).on('click','.editbtn',function(){
+        $(document).ready(function() {
+            $(document).on('click', '.editbtn', function() {
                 var ad_id = $(this).val();
                 $.ajax({
-                type:"GET",
-                url:"/ad-edit/"+ad_id,
-                success:function(response){
-                    console.log(response);
-                    $('#adId').val(response.addata.id);
-                    $('#attack').val(response.addata.attack);
-                }
+                    type: "GET",
+                    url: "/ad-edit/" + ad_id,
+                    success: function(response) {
+                        console.log(response);
+                        $('#adId').val(response.addata.id);
+                        $('#attack').val(response.addata.attack);
+                    }
                 });
             });
         });
